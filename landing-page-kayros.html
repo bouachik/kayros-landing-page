@@ -1,0 +1,1332 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kayros -- Le catalyseur de la distribution pour les assureurs, mutuelles et courtiers</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        nunito: ['Nunito', 'sans-serif'],
+                    },
+                    colors: {
+                        kayros: {
+                            50: '#f0f7ff',
+                            100: '#e0efff',
+                            200: '#b9dfff',
+                            300: '#7cc5ff',
+                            400: '#36a9ff',
+                            500: '#0E93E5',
+                            600: '#0074c4',
+                            700: '#005c9e',
+                            800: '#004e83',
+                            900: '#00416d',
+                            950: '#002a49',
+                        },
+                        dark: '#1a1a2e',
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        * { font-family: 'Nunito', sans-serif; }
+
+        .pill { border-radius: 160px; }
+
+        .card-shadow {
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 6px 16px rgba(0,0,0,0.04);
+        }
+
+        .cta-glow {
+            box-shadow: 0 4px 24px rgba(14, 147, 229, 0.35);
+        }
+
+        .text-gradient {
+            background: linear-gradient(135deg, #0E93E5, #06b6d4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-bg {
+            background: linear-gradient(180deg, #f0f7ff 0%, #ffffff 100%);
+        }
+
+        .section-light {
+            background: #f7f9fc;
+        }
+
+        /* Reveal animation */
+        .reveal {
+            opacity: 0;
+            transform: translateY(32px);
+            transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Drawer transition */
+        .drawer-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .drawer-open {
+            max-height: 3000px;
+        }
+
+        /* Persona badge colors */
+        .badge-dir-com { background: #eff6ff; color: #2563eb; border: 1px solid #bfdbfe; }
+        .badge-metier { background: #ecfdf5; color: #059669; border: 1px solid #a7f3d0; }
+        .badge-dsi { background: #faf5ff; color: #9333ea; border: 1px solid #e9d5ff; }
+        .badge-dg { background: #fffbeb; color: #d97706; border: 1px solid #fde68a; }
+
+        /* Float animation */
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-12px); }
+        }
+        .float { animation: float 4s ease-in-out infinite; }
+        .float-delay { animation: float 4s ease-in-out 1s infinite; }
+
+        /* Marquee animation */
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        .marquee-track {
+            animation: marquee 30s linear infinite;
+        }
+        .marquee-track:hover {
+            animation-play-state: paused;
+        }
+
+        /* Chevron rotation */
+        .chevron-rotate {
+            transition: transform 0.3s ease;
+        }
+
+        /* Smooth scroll */
+        html { scroll-behavior: smooth; }
+
+        /* Mobile menu */
+        .mobile-menu {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+        .mobile-menu.open {
+            max-height: 400px;
+        }
+    </style>
+</head>
+<body class="font-nunito text-dark antialiased">
+
+    <!-- ========== NAVBAR ========== -->
+    <nav class="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-lg border-b border-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo -->
+                <a href="#" class="flex items-center">
+                    <span class="text-xl font-extrabold tracking-[0.25em] text-dark">KAYROS<span class="text-kayros-500">.</span></span>
+                </a>
+
+                <!-- Desktop nav -->
+                <div class="hidden lg:flex items-center gap-8">
+                    <a href="#souscription-web" class="text-sm font-semibold text-gray-600 hover:text-kayros-500 transition-colors">Souscription Web</a>
+                    <a href="#espace-conseiller" class="text-sm font-semibold text-gray-600 hover:text-kayros-500 transition-colors">Espace Conseiller</a>
+                    <a href="#collectif" class="text-sm font-semibold text-gray-600 hover:text-kayros-500 transition-colors">Collectif</a>
+                    <a href="#administration" class="text-sm font-semibold text-gray-600 hover:text-kayros-500 transition-colors">Administration</a>
+                    <a href="#pilotage" class="text-sm font-semibold text-gray-600 hover:text-kayros-500 transition-colors">Pilotage</a>
+                </div>
+
+                <!-- CTA desktop -->
+                <div class="hidden lg:block">
+                    <a href="mailto:kays@kayros.tech" class="pill inline-flex items-center px-6 py-2.5 bg-kayros-500 text-white text-sm font-bold hover:bg-kayros-600 transition-colors cta-glow">
+                        Demander une d&eacute;mo
+                    </a>
+                </div>
+
+                <!-- Mobile hamburger -->
+                <button id="mobile-toggle" class="lg:hidden p-2 text-gray-600 hover:text-kayros-500" onclick="document.getElementById('mobile-menu').classList.toggle('open')">
+                    <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"/>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Mobile menu -->
+            <div id="mobile-menu" class="mobile-menu lg:hidden">
+                <div class="py-4 space-y-3 border-t border-gray-100">
+                    <a href="#souscription-web" class="block text-sm font-semibold text-gray-600 hover:text-kayros-500">Souscription Web</a>
+                    <a href="#espace-conseiller" class="block text-sm font-semibold text-gray-600 hover:text-kayros-500">Espace Conseiller</a>
+                    <a href="#collectif" class="block text-sm font-semibold text-gray-600 hover:text-kayros-500">Collectif</a>
+                    <a href="#administration" class="block text-sm font-semibold text-gray-600 hover:text-kayros-500">Administration</a>
+                    <a href="#pilotage" class="block text-sm font-semibold text-gray-600 hover:text-kayros-500">Pilotage</a>
+                    <a href="mailto:kays@kayros.tech" class="pill inline-flex items-center px-6 py-2.5 bg-kayros-500 text-white text-sm font-bold hover:bg-kayros-600 transition-colors mt-2">
+                        Demander une d&eacute;mo
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ========== HERO ========== -->
+    <section class="hero-bg pt-28 pb-20 lg:pt-36 lg:pb-28">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <!-- Badge -->
+            <div class="reveal inline-flex items-center pill px-5 py-2 bg-kayros-50 border border-kayros-200 mb-8">
+                <span class="text-sm font-bold text-kayros-600">Le partenaire pour acc&eacute;l&eacute;rer votre croissance</span>
+            </div>
+
+            <!-- H1 -->
+            <h1 class="reveal text-4xl md:text-5xl lg:text-6xl font-extrabold text-dark leading-tight max-w-4xl mx-auto mb-6">
+                Acc&eacute;l&eacute;rez votre distribution. Convertissez plus. <span class="text-gradient">Sans une ligne de code.</span>
+            </h1>
+
+            <!-- Subtitle -->
+            <p class="reveal text-lg md:text-xl text-gray-500 max-w-3xl mx-auto mb-10">
+                Concevez vos parcours de souscription et d&eacute;ployez vos produits d'assurance sur tous les canaux de distribution en toute simplicit&eacute;.
+            </p>
+
+            <!-- CTAs -->
+            <div class="reveal flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
+                <a href="mailto:kays@kayros.tech" class="pill inline-flex items-center px-8 py-3.5 bg-kayros-500 text-white font-bold text-base hover:bg-kayros-600 transition-colors cta-glow">
+                    R&eacute;servez votre d&eacute;monstration
+                </a>
+                <a href="#souscription-web" class="pill inline-flex items-center gap-2 px-8 py-3.5 border-2 border-gray-200 text-gray-700 font-bold text-base hover:border-kayros-300 hover:text-kayros-500 transition-colors">
+                    D&eacute;couvrir la plateforme
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/>
+                    </svg>
+                </a>
+            </div>
+
+            <!-- Trust signals -->
+            <div class="reveal flex flex-wrap items-center justify-center gap-6 mb-14 text-sm font-semibold text-gray-500">
+                <span class="flex items-center gap-2">
+                    <svg class="w-5 h-5 text-kayros-500" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
+                    Centraliser
+                </span>
+                <span class="flex items-center gap-2">
+                    <svg class="w-5 h-5 text-kayros-500" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
+                    Personnaliser
+                </span>
+                <span class="flex items-center gap-2">
+                    <svg class="w-5 h-5 text-kayros-500" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
+                    Acc&eacute;l&eacute;rer
+                </span>
+            </div>
+
+            <!-- KPI metric cards -->
+            <div class="reveal grid grid-cols-2 lg:grid-cols-4 gap-4 max-w-4xl mx-auto">
+                <div class="bg-white card-shadow rounded-2xl p-5 border border-gray-100">
+                    <div class="text-2xl font-extrabold text-kayros-500 mb-1">100%</div>
+                    <div class="text-xs font-semibold text-gray-400">Param&eacute;trable sans code</div>
+                </div>
+                <div class="bg-white card-shadow rounded-2xl p-5 border border-gray-100">
+                    <div class="text-2xl font-extrabold text-kayros-500 mb-1">2 clics</div>
+                    <div class="text-xs font-semibold text-gray-400">Max par action</div>
+                </div>
+                <div class="bg-white card-shadow rounded-2xl p-5 border border-gray-100">
+                    <div class="text-2xl font-extrabold text-kayros-500 mb-1">Temps r&eacute;el</div>
+                    <div class="text-xs font-semibold text-gray-400">Web &harr; Conseiller</div>
+                </div>
+                <div class="bg-white card-shadow rounded-2xl p-5 border border-gray-100">
+                    <div class="text-2xl font-extrabold text-kayros-500 mb-1">Bout en bout</div>
+                    <div class="text-xs font-semibold text-gray-400">Jusqu'&agrave; la mise en gestion</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== PARTENAIRES ========== -->
+    <section class="py-12 border-b border-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <p class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-8">Nos partenaires</p>
+            <div class="flex flex-wrap items-center justify-center gap-10 md:gap-16 opacity-50">
+                <span class="text-lg md:text-xl font-extrabold text-gray-400">Radiance Mutuelle</span>
+                <span class="text-lg md:text-xl font-extrabold text-gray-400">MCCI</span>
+                <span class="text-lg md:text-xl font-extrabold text-gray-400">SPVIE</span>
+                <span class="text-lg md:text-xl font-extrabold text-gray-400">LMG</span>
+                <span class="text-lg md:text-xl font-extrabold text-gray-400">April</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== MODULE 1: SOUSCRIPTION WEB ========== -->
+    <section id="souscription-web" class="py-20 lg:py-28">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Section header -->
+            <div class="text-center mb-16">
+                <span class="reveal inline-block text-xs font-bold text-kayros-500 uppercase tracking-widest mb-4">Souscription digitale</span>
+                <h2 class="reveal text-3xl md:text-4xl lg:text-5xl font-extrabold text-dark mb-4">Convertissez chaque prospect en adh&eacute;rent</h2>
+                <p class="reveal text-lg text-gray-500 max-w-3xl mx-auto">Un tunnel de souscription 100% digital, personnalis&eacute; &agrave; l'image de votre mutuelle, de la premi&egrave;re visite jusqu'&agrave; la mise en gestion.</p>
+            </div>
+
+            <!-- 4 Highlight cards -->
+            <div class="grid md:grid-cols-2 gap-6 mb-8">
+                <!-- Card 1 -->
+                <div class="reveal bg-white card-shadow rounded-2xl p-6 border border-gray-100">
+                    <div class="w-12 h-12 rounded-xl bg-kayros-50 flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-kayros-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-extrabold text-dark mb-2">Tunnel personnalis&eacute; &agrave; votre image</h3>
+                    <p class="text-sm text-gray-500 mb-3">Charte graphique, logo, couleurs, typographie -- chaque mutuelle a son propre rendu visuel. Vos prospects naviguent sur votre site, pas sur un outil tiers.</p>
+                    <span class="badge-dg inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium">Dir. G&eacute;n&eacute;rale</span>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="reveal bg-white card-shadow rounded-2xl p-6 border border-gray-100">
+                    <div class="w-12 h-12 rounded-xl bg-emerald-50 flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 16.875h3.375m0 0h3.375m-3.375 0V13.5m0 3.375v3.375M6 10.5h2.25a2.25 2.25 0 002.25-2.25V6a2.25 2.25 0 00-2.25-2.25H6A2.25 2.25 0 003.75 6v2.25A2.25 2.25 0 006 10.5zm0 9.75h2.25A2.25 2.25 0 0010.5 18v-2.25a2.25 2.25 0 00-2.25-2.25H6a2.25 2.25 0 00-2.25 2.25V18A2.25 2.25 0 006 20.25zm9.75-9.75H18a2.25 2.25 0 002.25-2.25V6A2.25 2.25 0 0018 3.75h-2.25A2.25 2.25 0 0013.5 6v2.25a2.25 2.25 0 002.25 2.25z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-extrabold text-dark mb-2">Multi-&eacute;quipement intelligent</h3>
+                    <p class="text-sm text-gray-500 mb-3">Proposez sant&eacute; + pr&eacute;voyance + assistance sur le m&ecirc;me parcours. La cotisation s'ajuste en temps r&eacute;el. Augmentez le panier moyen sans complexit&eacute;.</p>
+                    <span class="badge-dir-com inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium">Dir. Commerciale</span>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="reveal bg-white card-shadow rounded-2xl p-6 border border-gray-100">
+                    <div class="w-12 h-12 rounded-xl bg-cyan-50 flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-cyan-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-extrabold text-dark mb-2">Signature &eacute;lectronique int&eacute;gr&eacute;e</h3>
+                    <p class="text-sm text-gray-500 mb-3">Le prospect signe directement dans la plateforme, sans jamais &ecirc;tre redirig&eacute;. Bulletin d'adh&eacute;sion, mandat -- ce sont vos documents, pas des templates.</p>
+                    <span class="badge-dg inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium">Dir. G&eacute;n&eacute;rale</span>
+                </div>
+
+                <!-- Card 4 -->
+                <div class="reveal bg-white card-shadow rounded-2xl p-6 border border-gray-100">
+                    <div class="w-12 h-12 rounded-xl bg-purple-50 flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-purple-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 12c0-1.232-.046-2.453-.138-3.662a4.006 4.006 0 00-3.7-3.7 48.678 48.678 0 00-7.324 0 4.006 4.006 0 00-3.7 3.7c-.017.22-.032.441-.046.662M19.5 12l3-3m-3 3l-3-3m-12 3c0 1.232.046 2.453.138 3.662a4.006 4.006 0 003.7 3.7 48.656 48.656 0 007.324 0 4.006 4.006 0 003.7-3.7c.017-.22.032-.441.046-.662M4.5 12l3 3m-3-3l-3 3"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-extrabold text-dark mb-2">R&eacute;siliation infra-annuelle automatis&eacute;e</h3>
+                    <p class="text-sm text-gray-500 mb-3">Int&eacute;gr&eacute;e dans le tunnel via notre partenaire. Le prospect est guid&eacute; sans quitter votre site. Z&eacute;ro friction, z&eacute;ro abandon.</p>
+                    <span class="badge-dir-com inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium">Dir. Commerciale</span>
+                </div>
+            </div>
+
+            <!-- Drawer toggle -->
+            <div class="text-center mb-4">
+                <button onclick="toggleDrawer('drawer-web')" class="pill inline-flex items-center gap-2 px-6 py-2.5 border border-gray-200 text-gray-500 text-sm font-semibold hover:border-kayros-300 hover:text-kayros-500 transition-colors">
+                    Voir toutes les fonctionnalit&eacute;s
+                    <svg class="w-4 h-4 chevron-rotate" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Drawer content -->
+            <div id="drawer-web" class="drawer-content">
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4 pt-6">
+                    <div class="p-4 bg-gray-50 rounded-xl border border-gray-100">
+                        <p class="font-bold text-dark text-sm">2 modes d'entr&eacute;e</p>
+                        <p class="text-xs text-gray-500 mt-1">Par profil ou par tarification directe -- param&eacute;trable selon la mutuelle</p>
+                        <span class="badge-metier inline-flex px-2 py-0.5 rounded-full text-xs font-medium mt-2">&Eacute;quipes M&eacute;tier</span>
+                    </div>
+                    <div class="p-4 bg-gray-50 rounded-xl border border-gray-100">
+                        <p class="font-bold text-dark text-sm">Recueil des besoins adaptatif</p>
+                        <p class="text-xs text-gray-500 mt-1">Mode simplifi&eacute; (un choix global) ou granulaire par poste de soins avec budget souhait&eacute;</p>
+                        <span class="badge-dir-com inline-flex px-2 py-0.5 rounded-full text-xs font-medium mt-2">Dir. Commerciale</span>
+                    </div>
+                    <div class="p-4 bg-gray-50 rounded-xl border border-gray-100">
+                        <p class="font-bold text-dark text-sm">Contr&ocirc;les automatiques</p>
+                        <p class="text-xs text-gray-500 mt-1">Validation IBAN, BIC et num&eacute;ro de s&eacute;curit&eacute; sociale en temps r&eacute;el pour garantir la qualit&eacute; des donn&eacute;es</p>
+                        <span class="badge-dsi inline-flex px-2 py-0.5 rounded-full text-xs font-medium mt-2">DSI</span>
+                    </div>
+                    <div class="p-4 bg-gray-50 rounded-xl border border-gray-100">
+                        <p class="font-bold text-dark text-sm">Gestion 2 RIB distincts</p>
+                        <p class="text-xs text-gray-500 mt-1">Compte de pr&eacute;l&egrave;vement des cotisations s&eacute;par&eacute; du compte de remboursement des prestations</p>
+                        <span class="badge-metier inline-flex px-2 py-0.5 rounded-full text-xs font-medium mt-2">&Eacute;quipes M&eacute;tier</span>
+                    </div>
+                    <div class="p-4 bg-gray-50 rounded-xl border border-gray-100">
+                        <p class="font-bold text-dark text-sm">Gestion tiers payeur</p>
+                        <p class="text-xs text-gray-500 mt-1">Le b&eacute;n&eacute;ficiaire n'est pas le payeur ? Le parcours collecte automatiquement les donn&eacute;es du tiers</p>
+                        <span class="badge-metier inline-flex px-2 py-0.5 rounded-full text-xs font-medium mt-2">&Eacute;quipes M&eacute;tier</span>
+                    </div>
+                    <div class="p-4 bg-gray-50 rounded-xl border border-gray-100">
+                        <p class="font-bold text-dark text-sm">Pi&egrave;ces justificatives flexibles</p>
+                        <p class="text-xs text-gray-500 mt-1">Avant ou apr&egrave;s la signature -- choisissez entre rigueur documentaire et fluidit&eacute; commerciale</p>
+                        <span class="badge-dir-com inline-flex px-2 py-0.5 rounded-full text-xs font-medium mt-2">Dir. Commerciale</span>
+                    </div>
+                    <div class="p-4 bg-gray-50 rounded-xl border border-gray-100">
+                        <p class="font-bold text-dark text-sm">Paiement 1&egrave;re cotisation int&eacute;gr&eacute;</p>
+                        <p class="text-xs text-gray-500 mt-1">Plateforme de paiement int&eacute;gr&eacute;e dans le tunnel. Retour automatique apr&egrave;s paiement.</p>
+                        <span class="badge-dg inline-flex px-2 py-0.5 rounded-full text-xs font-medium mt-2">Dir. G&eacute;n&eacute;rale</span>
+                    </div>
+                    <div class="p-4 bg-gray-50 rounded-xl border border-gray-100">
+                        <p class="font-bold text-dark text-sm">Adresse auto-compl&eacute;t&eacute;e</p>
+                        <p class="text-xs text-gray-500 mt-1">Connect&eacute;e &agrave; une base externe pour garantir la qualit&eacute; et r&eacute;duire les erreurs de saisie</p>
+                        <span class="badge-dsi inline-flex px-2 py-0.5 rounded-full text-xs font-medium mt-2">DSI</span>
+                    </div>
+                    <div class="p-4 bg-gray-50 rounded-xl border border-gray-100">
+                        <p class="font-bold text-dark text-sm">Vos documents, pas les n&ocirc;tres</p>
+                        <p class="text-xs text-gray-500 mt-1">Bulletins d'adh&eacute;sion, mandats, IPID -- Kayros s'adapte &agrave; votre &eacute;cosyst&egrave;me &eacute;ditique</p>
+                        <span class="badge-dg inline-flex px-2 py-0.5 rounded-full text-xs font-medium mt-2">Dir. G&eacute;n&eacute;rale</span>
+                    </div>
+                    <div class="p-4 bg-gray-50 rounded-xl border border-gray-100">
+                        <p class="font-bold text-dark text-sm">D&eacute;clarations r&eacute;glementaires</p>
+                        <p class="text-xs text-gray-500 mt-1">Stock&eacute;es en base de donn&eacute;es pour la conformit&eacute; et la tra&ccedil;abilit&eacute; d'audit</p>
+                        <span class="badge-dsi inline-flex px-2 py-0.5 rounded-full text-xs font-medium mt-2">DSI</span>
+                    </div>
+                    <div class="p-4 bg-gray-50 rounded-xl border border-gray-100">
+                        <p class="font-bold text-dark text-sm">Abandon r&eacute;cup&eacute;rable</p>
+                        <p class="text-xs text-gray-500 mt-1">Si le prospect quitte, le projet est sauvegard&eacute; et r&eacute;cup&eacute;rable c&ocirc;t&eacute; conseiller avec son &eacute;tat d'avancement</p>
+                        <span class="badge-dir-com inline-flex px-2 py-0.5 rounded-full text-xs font-medium mt-2">Dir. Commerciale</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== MODULE 2: ESPACE CONSEILLER ========== -->
+    <section id="espace-conseiller" class="section-light py-20 lg:py-28">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <span class="reveal inline-block text-xs font-bold text-kayros-500 uppercase tracking-widest mb-4">Productivit&eacute; conseiller</span>
+                <h2 class="reveal text-3xl md:text-4xl lg:text-5xl font-extrabold text-dark mb-4">Doublez la productivit&eacute; de vos &eacute;quipes</h2>
+                <p class="reveal text-lg text-gray-500 max-w-3xl mx-auto">Chaque fonctionnalit&eacute; existe pour une raison : acc&eacute;l&eacute;rer le travail du conseiller. Pas des features isol&eacute;es -- un workflow complet optimis&eacute; pour la conversion.</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-6 mb-8">
+                <div class="reveal bg-white card-shadow rounded-2xl p-6 border border-gray-100">
+                    <div class="w-12 h-12 rounded-xl bg-kayros-50 flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-kayros-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 17.25v1.007a3 3 0 01-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0115 18.257V17.25m6-12V15a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 15V5.25m18 0A2.25 2.25 0 0018.75 3H5.25A2.25 2.25 0 003 5.25m18 0V12a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 12V5.25"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-extrabold text-dark mb-2">L'&eacute;cran projet : centre de gravit&eacute;</h3>
+                    <p class="text-sm text-gray-500 mb-3">Appeler, envoyer un email, cr&eacute;er une t&acirc;che, reprendre une souscription -- tout se fait depuis un seul &eacute;cran, sans jamais naviguer ailleurs.</p>
+                    <span class="badge-dg inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium">Dir. G&eacute;n&eacute;rale</span>
+                </div>
+
+                <div class="reveal bg-white card-shadow rounded-2xl p-6 border border-gray-100">
+                    <div class="w-12 h-12 rounded-xl bg-amber-50 flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-amber-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-extrabold text-dark mb-2">Notification &rarr; T&acirc;che &rarr; Reprise en 2 clics</h3>
+                    <p class="text-sm text-gray-500 mb-3">Une notification arrive, le conseiller clique, voit le contexte complet (prospect, produit, tarif), clique 'Reprendre' -- il est dans la souscription.</p>
+                    <span class="badge-dir-com inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium">Dir. Commerciale</span>
+                </div>
+
+                <div class="reveal bg-white card-shadow rounded-2xl p-6 border border-gray-100">
+                    <div class="w-12 h-12 rounded-xl bg-emerald-50 flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 3c2.755 0 5.455.232 8.083.678.533.09.917.556.917 1.096v1.044a2.25 2.25 0 01-.659 1.591l-5.432 5.432a2.25 2.25 0 00-.659 1.591v2.927a2.25 2.25 0 01-1.244 2.013L9.75 21v-6.568a2.25 2.25 0 00-.659-1.591L3.659 7.409A2.25 2.25 0 013 5.818V4.774c0-.54.384-1.006.917-1.096A48.32 48.32 0 0112 3z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-extrabold text-dark mb-2">Filtres pr&eacute;-enregistr&eacute;s</h3>
+                    <p class="text-sm text-gray-500 mb-3">Le matin : clic sur 'projets sans offre'. L'apr&egrave;s-midi : clic sur 'offre envoy&eacute;e, pas souscrit'. Chaque moment de travail en un seul clic.</p>
+                    <span class="badge-metier inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium">&Eacute;quipes M&eacute;tier</span>
+                </div>
+
+                <div class="reveal bg-white card-shadow rounded-2xl p-6 border border-gray-100">
+                    <div class="w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-blue-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5M12 17.25h8.25"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-extrabold text-dark mb-2">Drawer lat&eacute;ral : tout le contexte en un clic</h3>
+                    <p class="text-sm text-gray-500 mb-3">Un clic sur le nom du prospect ouvre un panneau avec coordonn&eacute;es, produit, tarif, historique complet -- y compris les interactions des coll&egrave;gues.</p>
+                    <span class="badge-dir-com inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium">Dir. Commerciale</span>
+                </div>
+            </div>
+
+            <div class="text-center mb-4">
+                <button onclick="toggleDrawer('drawer-conseiller')" class="pill inline-flex items-center gap-2 px-6 py-2.5 border border-gray-200 text-gray-500 text-sm font-semibold hover:border-kayros-300 hover:text-kayros-500 transition-colors">
+                    Voir toutes les fonctionnalit&eacute;s
+                    <svg class="w-4 h-4 chevron-rotate" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/>
+                    </svg>
+                </button>
+            </div>
+
+            <div id="drawer-conseiller" class="drawer-content">
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4 pt-6">
+                    <div class="p-4 bg-white rounded-xl border border-gray-100">
+                        <p class="font-bold text-dark text-sm">Mode marketplace</p>
+                        <p class="text-xs text-gray-500 mt-1">Le conseiller saisit le profil -- Kayros s&eacute;lectionne automatiquement les produits &eacute;ligibles</p>
+                        <span class="badge-metier inline-flex px-2 py-0.5 rounded-full text-xs font-medium mt-2">&Eacute;quipes M&eacute;tier</span>
+                    </div>
+                    <div class="p-4 bg-white rounded-xl border border-gray-100">
+                        <p class="font-bold text-dark text-sm">Dupliquer un projet</p>
+                        <p class="text-xs text-gray-500 mt-1">Copier la structure d'un projet existant pour gagner du temps sur des profils similaires</p>
+                        <span class="badge-metier inline-flex px-2 py-0.5 rounded-full text-xs font-medium mt-2">&Eacute;quipes M&eacute;tier</span>
+                    </div>
+                    <div class="p-4 bg-white rounded-xl border border-gray-100">
+                        <p class="font-bold text-dark text-sm">Drawer aide &agrave; la vente</p>
+                        <p class="text-xs text-gray-500 mt-1">Panneau contextuel avec garanties, remboursements et arguments commerciaux pour chaque produit</p>
+                        <span class="badge-dir-com inline-flex px-2 py-0.5 rounded-full text-xs font-medium mt-2">Dir. Commerciale</span>
+                    </div>
+                    <div class="p-4 bg-white rounded-xl border border-gray-100">
+                        <p class="font-bold text-dark text-sm">Auto-&eacute;dition documents</p>
+                        <p class="text-xs text-gray-500 mt-1">Devis, devoir de conseil, grilles de garantie, IPID -- g&eacute;n&eacute;r&eacute;s et attach&eacute;s automatiquement &agrave; l'email</p>
+                        <span class="badge-dir-com inline-flex px-2 py-0.5 rounded-full text-xs font-medium mt-2">Dir. Commerciale</span>
+                    </div>
+                    <div class="p-4 bg-white rounded-xl border border-gray-100">
+                        <p class="font-bold text-dark text-sm">Garde-fou souscription</p>
+                        <p class="text-xs text-gray-500 mt-1">Le bouton Souscription reste gris&eacute; tant que la proposition n'a pas &eacute;t&eacute; envoy&eacute;e -- impossible de court-circuiter le process</p>
+                        <span class="badge-metier inline-flex px-2 py-0.5 rounded-full text-xs font-medium mt-2">&Eacute;quipes M&eacute;tier</span>
+                    </div>
+                    <div class="p-4 bg-white rounded-xl border border-gray-100">
+                        <p class="font-bold text-dark text-sm">3 phases de souscription</p>
+                        <p class="text-xs text-gray-500 mt-1">Informations compl&eacute;mentaires, pi&egrave;ces justificatives, signature -- chaque phase avec indicateur de compl&eacute;tion en %</p>
+                        <span class="badge-metier inline-flex px-2 py-0.5 rounded-full text-xs font-medium mt-2">&Eacute;quipes M&eacute;tier</span>
+                    </div>
+                    <div class="p-4 bg-white rounded-xl border border-gray-100">
+                        <p class="font-bold text-dark text-sm">Signature papier + re-upload</p>
+                        <p class="text-xs text-gray-500 mt-1">Alternative &agrave; la signature &eacute;lectronique : imprimer, signer manuellement, recharger les documents sign&eacute;s</p>
+                        <span class="badge-metier inline-flex px-2 py-0.5 rounded-full text-xs font-medium mt-2">&Eacute;quipes M&eacute;tier</span>
+                    </div>
+                    <div class="p-4 bg-white rounded-xl border border-gray-100">
+                        <p class="font-bold text-dark text-sm">Templates emails pr&eacute;-r&eacute;dig&eacute;s</p>
+                        <p class="text-xs text-gray-500 mt-1">Relance apr&egrave;s non-r&eacute;ponse, faux num&eacute;ro, demande de disponibilit&eacute; -- avec pi&egrave;ces jointes possibles</p>
+                        <span class="badge-metier inline-flex px-2 py-0.5 rounded-full text-xs font-medium mt-2">&Eacute;quipes M&eacute;tier</span>
+                    </div>
+                    <div class="p-4 bg-white rounded-xl border border-gray-100">
+                        <p class="font-bold text-dark text-sm">T&eacute;l&eacute;phonie Aircall int&eacute;gr&eacute;e</p>
+                        <p class="text-xs text-gray-500 mt-1">Click-to-call depuis la plateforme. Les donn&eacute;es d'appels alimentent l'historique du prospect.</p>
+                        <span class="badge-dir-com inline-flex px-2 py-0.5 rounded-full text-xs font-medium mt-2">Dir. Commerciale</span>
+                    </div>
+                    <div class="p-4 bg-white rounded-xl border border-gray-100">
+                        <p class="font-bold text-dark text-sm">Tableau de bord 360&deg;</p>
+                        <p class="text-xs text-gray-500 mt-1">Historique devis, qualifications, appels, emails -- filtrable par p&eacute;riode (derni&egrave;re heure, dernier jour)</p>
+                        <span class="badge-metier inline-flex px-2 py-0.5 rounded-full text-xs font-medium mt-2">&Eacute;quipes M&eacute;tier</span>
+                    </div>
+                    <div class="p-4 bg-white rounded-xl border border-gray-100">
+                        <p class="font-bold text-dark text-sm">Notifications typ&eacute;es</p>
+                        <p class="text-xs text-gray-500 mt-1">Nouveau projet attribu&eacute;, t&acirc;che de rappel programm&eacute;e, contrat sign&eacute; -- chaque notification ouvre vers l'action</p>
+                        <span class="badge-metier inline-flex px-2 py-0.5 rounded-full text-xs font-medium mt-2">&Eacute;quipes M&eacute;tier</span>
+                    </div>
+                    <div class="p-4 bg-white rounded-xl border border-gray-100">
+                        <p class="font-bold text-dark text-sm">Historique multi-conseiller</p>
+                        <p class="text-xs text-gray-500 mt-1">Le conseiller voit non seulement ses propres interactions mais aussi celles de ses coll&egrave;gues avec le prospect</p>
+                        <span class="badge-dir-com inline-flex px-2 py-0.5 rounded-full text-xs font-medium mt-2">Dir. Commerciale</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== MODULE 3: OMNICANALITE ========== -->
+    <section id="omnicanalite" class="py-20 lg:py-28">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <span class="reveal inline-block text-xs font-bold text-kayros-500 uppercase tracking-widest mb-4">Omnicanalit&eacute; native</span>
+                <h2 class="reveal text-3xl md:text-4xl lg:text-5xl font-extrabold text-dark mb-4">Un processus. Deux visions. Z&eacute;ro rupture.</h2>
+                <p class="reveal text-lg text-gray-500 max-w-3xl mx-auto">Ce n'est pas une reprise de dossier. C'est un unique processus de vente partag&eacute; entre le prospect web et le conseiller, synchronis&eacute; en temps r&eacute;el.</p>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-12 items-center mb-8">
+                <!-- Left: features stacked -->
+                <div class="space-y-6">
+                    <div class="reveal flex gap-4">
+                        <div class="w-10 h-10 rounded-lg bg-kayros-50 flex items-center justify-center flex-shrink-0 mt-1">
+                            <svg class="w-5 h-5 text-kayros-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M7.5 21L3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5"/></svg>
+                        </div>
+                        <div>
+                            <h4 class="font-extrabold text-dark mb-1">Processus unique, deux frontaux</h4>
+                            <p class="text-sm text-gray-500">Le prospect et le conseiller impactent le m&ecirc;me processus. Pas deux parcours synchronis&eacute;s -- un seul processus avec deux visions.</p>
+                        </div>
+                    </div>
+                    <div class="reveal flex gap-4">
+                        <div class="w-10 h-10 rounded-lg bg-emerald-50 flex items-center justify-center flex-shrink-0 mt-1">
+                            <svg class="w-5 h-5 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99"/></svg>
+                        </div>
+                        <div>
+                            <h4 class="font-extrabold text-dark mb-1">Synchronisation temps r&eacute;el</h4>
+                            <p class="text-sm text-gray-500">Toutes les donn&eacute;es saisies par l'un sont visibles par l'autre instantan&eacute;ment.</p>
+                        </div>
+                    </div>
+                    <div class="reveal flex gap-4">
+                        <div class="w-10 h-10 rounded-lg bg-purple-50 flex items-center justify-center flex-shrink-0 mt-1">
+                            <svg class="w-5 h-5 text-purple-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244"/></svg>
+                        </div>
+                        <div>
+                            <h4 class="font-extrabold text-dark mb-1">Lien s&eacute;curis&eacute; donn&eacute;es sensibles</h4>
+                            <p class="text-sm text-gray-500">Le conseiller envoie un lien qui ne montre que les champs manquants. Id&eacute;al pour l'IBAN -- plus d'objection au t&eacute;l&eacute;phone.</p>
+                        </div>
+                    </div>
+                    <div class="reveal flex gap-4">
+                        <div class="w-10 h-10 rounded-lg bg-amber-50 flex items-center justify-center flex-shrink-0 mt-1">
+                            <svg class="w-5 h-5 text-amber-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z"/></svg>
+                        </div>
+                        <div>
+                            <h4 class="font-extrabold text-dark mb-1">Attribution intelligente</h4>
+                            <p class="text-sm text-gray-500">Tour de r&ocirc;le, par comp&eacute;tence g&eacute;ographique, par r&eacute;seau commercial -- optimisez le dispatch pour maximiser la conversion.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right: Visual diagram -->
+                <div class="reveal">
+                    <div class="relative">
+                        <div class="float bg-white rounded-2xl card-shadow border border-gray-100 p-5 mb-6">
+                            <div class="flex items-center gap-2 mb-3">
+                                <div class="flex gap-1.5">
+                                    <div class="w-3 h-3 rounded-full bg-red-400"></div>
+                                    <div class="w-3 h-3 rounded-full bg-yellow-400"></div>
+                                    <div class="w-3 h-3 rounded-full bg-green-400"></div>
+                                </div>
+                                <div class="flex-1 bg-gray-100 rounded-lg px-3 py-1 text-xs text-gray-400 font-medium">kayros.mutuelle.fr</div>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-sm font-extrabold text-dark">Vision Prospect</p>
+                                    <p class="text-xs text-gray-400">Parcours souscription</p>
+                                </div>
+                                <div class="pill bg-kayros-50 text-kayros-600 text-sm font-bold px-3 py-1">65%</div>
+                            </div>
+                            <div class="mt-3 w-full bg-gray-100 rounded-full h-2">
+                                <div class="bg-kayros-500 h-2 rounded-full" style="width: 65%"></div>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center justify-center my-4">
+                            <div class="w-12 h-12 rounded-full bg-kayros-500 flex items-center justify-center shadow-lg">
+                                <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99"/></svg>
+                            </div>
+                        </div>
+
+                        <div class="float-delay bg-white rounded-2xl card-shadow border border-gray-100 p-5">
+                            <div class="flex items-center gap-2 mb-3">
+                                <div class="flex gap-1.5">
+                                    <div class="w-3 h-3 rounded-full bg-red-400"></div>
+                                    <div class="w-3 h-3 rounded-full bg-yellow-400"></div>
+                                    <div class="w-3 h-3 rounded-full bg-green-400"></div>
+                                </div>
+                                <div class="flex-1 bg-gray-100 rounded-lg px-3 py-1 text-xs text-gray-400 font-medium">app.kayros.tech/conseiller</div>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-sm font-extrabold text-dark">Vision Conseiller</p>
+                                    <p class="text-xs text-gray-400">Espace conseiller</p>
+                                </div>
+                                <div class="pill bg-emerald-50 text-emerald-600 text-sm font-bold px-3 py-1">Reprise</div>
+                            </div>
+                            <div class="mt-3 flex gap-2">
+                                <div class="flex-1 bg-gray-100 rounded-lg h-8"></div>
+                                <div class="flex-1 bg-kayros-50 rounded-lg h-8"></div>
+                                <div class="flex-1 bg-gray-100 rounded-lg h-8"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center mb-4">
+                <button onclick="toggleDrawer('drawer-omni')" class="pill inline-flex items-center gap-2 px-6 py-2.5 border border-gray-200 text-gray-500 text-sm font-semibold hover:border-kayros-300 hover:text-kayros-500 transition-colors">
+                    Voir toutes les fonctionnalit&eacute;s
+                    <svg class="w-4 h-4 chevron-rotate" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/></svg>
+                </button>
+            </div>
+
+            <div id="drawer-omni" class="drawer-content">
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4 pt-6">
+                    <div class="p-4 bg-gray-50 rounded-xl border border-gray-100">
+                        <p class="font-bold text-dark text-sm">Indicateur de compl&eacute;tion</p>
+                        <p class="text-xs text-gray-500 mt-1">Le conseiller voit exactement o&ugrave; en est le prospect (ex : 65% des donn&eacute;es saisies)</p>
+                        <span class="badge-dir-com inline-flex px-2 py-0.5 rounded-full text-xs font-medium mt-2">Dir. Commerciale</span>
+                    </div>
+                    <div class="p-4 bg-gray-50 rounded-xl border border-gray-100">
+                        <p class="font-bold text-dark text-sm">Parcours r&eacute;duit pour le prospect</p>
+                        <p class="text-xs text-gray-500 mt-1">Le lien s&eacute;curis&eacute; ne montre que les donn&eacute;es manquantes, pas tout le parcours</p>
+                        <span class="badge-metier inline-flex px-2 py-0.5 rounded-full text-xs font-medium mt-2">&Eacute;quipes M&eacute;tier</span>
+                    </div>
+                    <div class="p-4 bg-gray-50 rounded-xl border border-gray-100">
+                        <p class="font-bold text-dark text-sm">Notifications arriv&eacute;e projet</p>
+                        <p class="text-xs text-gray-500 mt-1">Quand un prospect cr&eacute;e un projet web, le conseiller attribu&eacute; est notifi&eacute; imm&eacute;diatement</p>
+                        <span class="badge-metier inline-flex px-2 py-0.5 rounded-full text-xs font-medium mt-2">&Eacute;quipes M&eacute;tier</span>
+                    </div>
+                    <div class="p-4 bg-gray-50 rounded-xl border border-gray-100">
+                        <p class="font-bold text-dark text-sm">Templates relance omnicanal</p>
+                        <p class="text-xs text-gray-500 mt-1">Faux num&eacute;ro, prospect injoignable -- templates sp&eacute;cifiques au contexte omnicanal</p>
+                        <span class="badge-metier inline-flex px-2 py-0.5 rounded-full text-xs font-medium mt-2">&Eacute;quipes M&eacute;tier</span>
+                    </div>
+                    <div class="p-4 bg-gray-50 rounded-xl border border-gray-100">
+                        <p class="font-bold text-dark text-sm">Fonctionnalit&eacute;s conseiller pr&eacute;serv&eacute;es</p>
+                        <p class="text-xs text-gray-500 mt-1">T&acirc;ches, emails, t&eacute;l&eacute;phonie, filtres -- tout fonctionne identiquement en mode omnicanal</p>
+                        <span class="badge-dg inline-flex px-2 py-0.5 rounded-full text-xs font-medium mt-2">Dir. G&eacute;n&eacute;rale</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== MODULE 4: COLLECTIF & AFFILIATION ========== -->
+    <section id="collectif" class="section-light py-20 lg:py-28">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <span class="reveal inline-block text-xs font-bold text-kayros-500 uppercase tracking-widest mb-4">Collectif & Affiliation</span>
+                <h2 class="reveal text-3xl md:text-4xl lg:text-5xl font-extrabold text-dark mb-4">Du contrat entreprise &agrave; l'affiliation de chaque salari&eacute;</h2>
+                <p class="reveal text-lg text-gray-500 max-w-3xl mx-auto">Parcours collectif complet avec cha&icirc;ne automatique contrat &rarr; affiliation. Le contrat sign&eacute; g&eacute;n&egrave;re automatiquement les parcours individuels des salari&eacute;s.</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-6 mb-8">
+                <div class="reveal bg-white card-shadow rounded-2xl p-6 border border-gray-100">
+                    <div class="w-12 h-12 rounded-xl bg-kayros-50 flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-kayros-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"/></svg>
+                    </div>
+                    <h3 class="text-lg font-extrabold text-dark mb-2">Recherche entreprise intelligente</h3>
+                    <p class="text-sm text-gray-500 mb-3">Tapez le nom, s&eacute;lectionnez -- toutes les donn&eacute;es sont r&eacute;cup&eacute;r&eacute;es automatiquement (IDSSC, Code NAF, informations l&eacute;gales).</p>
+                    <span class="badge-metier inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium">&Eacute;quipes M&eacute;tier</span>
+                </div>
+                <div class="reveal bg-white card-shadow rounded-2xl p-6 border border-gray-100">
+                    <div class="w-12 h-12 rounded-xl bg-emerald-50 flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 15.75V18m-7.5-6.75h.008v.008H8.25v-.008zm0 2.25h.008v.008H8.25V13.5zm0 2.25h.008v.008H8.25v-.008zm0 2.25h.008v.008H8.25V18zm2.498-6.75h.007v.008h-.007v-.008zm0 2.25h.007v.008h-.007V13.5zm0 2.25h.007v.008h-.007v-.008zm0 2.25h.007v.008h-.007V18zm2.504-6.75h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V13.5zm0 2.25h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V18zm2.498-6.75h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V13.5zM8.25 6h7.5v2.25h-7.5V6zM12 2.25c-1.892 0-3.758.11-5.593.322C5.307 2.7 4.5 3.65 4.5 4.757V19.5a2.25 2.25 0 002.25 2.25h10.5a2.25 2.25 0 002.25-2.25V4.757c0-1.108-.806-2.057-1.907-2.185A48.507 48.507 0 0012 2.25z"/></svg>
+                    </div>
+                    <h3 class="text-lg font-extrabold text-dark mb-2">Simulateur de tarification interactif</h3>
+                    <p class="text-sm text-gray-500 mb-3">Structure de cotisation, r&eacute;partition effectif, calcul en temps r&eacute;el. Changez les variables, le budget global s'ajuste instantan&eacute;ment.</p>
+                    <span class="badge-dir-com inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium">Dir. Commerciale</span>
+                </div>
+                <div class="reveal bg-white card-shadow rounded-2xl p-6 border border-gray-100">
+                    <div class="w-12 h-12 rounded-xl bg-amber-50 flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-amber-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244"/></svg>
+                    </div>
+                    <h3 class="text-lg font-extrabold text-dark mb-2">Cha&icirc;ne automatique contrat &rarr; affiliation</h3>
+                    <p class="text-sm text-gray-500 mb-3">Le contrat collectif sign&eacute; d&eacute;clenche automatiquement les parcours d'affiliation individuels, ajust&eacute;s aux options choisies.</p>
+                    <span class="badge-dg inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium">Dir. G&eacute;n&eacute;rale</span>
+                </div>
+                <div class="reveal bg-white card-shadow rounded-2xl p-6 border border-gray-100">
+                    <div class="w-12 h-12 rounded-xl bg-purple-50 flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-purple-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 9.776c.112-.017.227-.026.344-.026h15.812c.117 0 .232.009.344.026m-16.5 0a2.25 2.25 0 00-1.883 2.542l.857 6a2.25 2.25 0 002.227 1.932H19.05a2.25 2.25 0 002.227-1.932l.857-6a2.25 2.25 0 00-1.883-2.542m-16.5 0V6A2.25 2.25 0 016 3.75h3.879a1.5 1.5 0 011.06.44l2.122 2.12a1.5 1.5 0 001.06.44H18A2.25 2.25 0 0120.25 9v.776"/></svg>
+                    </div>
+                    <h3 class="text-lg font-extrabold text-dark mb-2">3 m&eacute;thodes de d&eacute;ploiement</h3>
+                    <p class="text-sm text-gray-500 mb-3">Import Excel (massif), ajout individuel (au fil de l'eau), lien libre (auto-inscription pour collectivit&eacute;s et partenariats).</p>
+                    <span class="badge-dg inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium">Dir. G&eacute;n&eacute;rale</span>
+                </div>
+            </div>
+
+            <div class="text-center mb-4">
+                <button onclick="toggleDrawer('drawer-collectif')" class="pill inline-flex items-center gap-2 px-6 py-2.5 border border-gray-200 text-gray-500 text-sm font-semibold hover:border-kayros-300 hover:text-kayros-500 transition-colors">
+                    Voir toutes les fonctionnalit&eacute;s
+                    <svg class="w-4 h-4 chevron-rotate" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/></svg>
+                </button>
+            </div>
+
+            <div id="drawer-collectif" class="drawer-content">
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4 pt-6">
+                    <div class="p-4 bg-white rounded-xl border border-gray-100">
+                        <p class="font-bold text-dark text-sm">Param&eacute;trage coll&egrave;ge</p>
+                        <p class="text-xs text-gray-500 mt-1">Effectif, r&eacute;gime, date d'effet, &acirc;ge moyen, affiliation conjoint -- tout est configurable</p>
+                        <span class="badge-metier inline-flex px-2 py-0.5 rounded-full text-xs font-medium mt-2">&Eacute;quipes M&eacute;tier</span>
+                    </div>
+                    <div class="p-4 bg-white rounded-xl border border-gray-100">
+                        <p class="font-bold text-dark text-sm">Garanties conformes CCN</p>
+                        <p class="text-xs text-gray-500 mt-1">Granularit&eacute; par poste de soins, conformes &agrave; la Convention Collective applicable</p>
+                        <span class="badge-dsi inline-flex px-2 py-0.5 rounded-full text-xs font-medium mt-2">DSI</span>
+                    </div>
+                    <div class="p-4 bg-white rounded-xl border border-gray-100">
+                        <p class="font-bold text-dark text-sm">Embo&icirc;tement options 3 niveaux</p>
+                        <p class="text-xs text-gray-500 mt-1">Base, base+option int&eacute;gr&eacute;e, toutes options. Les options facultatives s'ajustent automatiquement.</p>
+                        <span class="badge-dir-com inline-flex px-2 py-0.5 rounded-full text-xs font-medium mt-2">Dir. Commerciale</span>
+                    </div>
+                    <div class="p-4 bg-white rounded-xl border border-gray-100">
+                        <p class="font-bold text-dark text-sm">R&eacute;ductions et d&eacute;rogations</p>
+                        <p class="text-xs text-gray-500 mt-1">R&eacute;ductions libres &agrave; la main du conseiller, ou soumises &agrave; validation manager</p>
+                        <span class="badge-dir-com inline-flex px-2 py-0.5 rounded-full text-xs font-medium mt-2">Dir. Commerciale</span>
+                    </div>
+                    <div class="p-4 bg-white rounded-xl border border-gray-100">
+                        <p class="font-bold text-dark text-sm">Email proposition auto-r&eacute;dig&eacute;</p>
+                        <p class="text-xs text-gray-500 mt-1">Nom entreprise, offre, budget, pi&egrave;ces jointes -- l'email est pr&ecirc;t, le conseiller n'a plus qu'&agrave; envoyer</p>
+                        <span class="badge-dir-com inline-flex px-2 py-0.5 rounded-full text-xs font-medium mt-2">Dir. Commerciale</span>
+                    </div>
+                    <div class="p-4 bg-white rounded-xl border border-gray-100">
+                        <p class="font-bold text-dark text-sm">Tracking proposition</p>
+                        <p class="text-xs text-gray-500 mt-1">Email envoy&eacute;, email ouvert, documents consult&eacute;s -- suivez la progression en temps r&eacute;el</p>
+                        <span class="badge-dir-com inline-flex px-2 py-0.5 rounded-full text-xs font-medium mt-2">Dir. Commerciale</span>
+                    </div>
+                    <div class="p-4 bg-white rounded-xl border border-gray-100">
+                        <p class="font-bold text-dark text-sm">Suivi signature 5 &eacute;tapes</p>
+                        <p class="text-xs text-gray-500 mt-1">Envoy&eacute; &rarr; Ouvert &rarr; Cliqu&eacute; &rarr; Documents consult&eacute;s &rarr; Sign&eacute;</p>
+                        <span class="badge-dir-com inline-flex px-2 py-0.5 rounded-full text-xs font-medium mt-2">Dir. Commerciale</span>
+                    </div>
+                    <div class="p-4 bg-white rounded-xl border border-gray-100">
+                        <p class="font-bold text-dark text-sm">Mandat pr&eacute;l&egrave;vement conditionnel</p>
+                        <p class="text-xs text-gray-500 mt-1">Si le salari&eacute; souscrit une option payante, le parcours lui demande automatiquement son mandat</p>
+                        <span class="badge-dsi inline-flex px-2 py-0.5 rounded-full text-xs font-medium mt-2">DSI</span>
+                    </div>
+                    <div class="p-4 bg-white rounded-xl border border-gray-100">
+                        <p class="font-bold text-dark text-sm">Impact options sur affiliation</p>
+                        <p class="text-xs text-gray-500 mt-1">Les options du contrat collectif d&eacute;terminent ce que le salari&eacute; voit dans son parcours d'affiliation</p>
+                        <span class="badge-dg inline-flex px-2 py-0.5 rounded-full text-xs font-medium mt-2">Dir. G&eacute;n&eacute;rale</span>
+                    </div>
+                    <div class="p-4 bg-white rounded-xl border border-gray-100">
+                        <p class="font-bold text-dark text-sm">Espace RH entreprise</p>
+                        <p class="text-xs text-gray-500 mt-1">Les responsables c&ocirc;t&eacute; entreprise suivent l'affiliation de leurs salari&eacute;s via un espace d&eacute;di&eacute;</p>
+                        <span class="badge-metier inline-flex px-2 py-0.5 rounded-full text-xs font-medium mt-2">&Eacute;quipes M&eacute;tier</span>
+                    </div>
+                    <div class="p-4 bg-white rounded-xl border border-gray-100">
+                        <p class="font-bold text-dark text-sm">Opt-in juridiques obligatoires</p>
+                        <p class="text-xs text-gray-500 mt-1">Pr&eacute;requis bloquant avant signature -- conformit&eacute; r&eacute;glementaire garantie</p>
+                        <span class="badge-dsi inline-flex px-2 py-0.5 rounded-full text-xs font-medium mt-2">DSI</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== MODULE 5: ADMINISTRATION ========== -->
+    <section id="administration" class="py-20 lg:py-28">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <span class="reveal inline-block text-xs font-bold text-kayros-500 uppercase tracking-widest mb-4">Administration self-service</span>
+                <h2 class="reveal text-3xl md:text-4xl lg:text-5xl font-extrabold text-dark mb-4">Vos &eacute;quipes m&eacute;tier aux commandes. Sans code.</h2>
+                <p class="reveal text-lg text-gray-500 max-w-3xl mx-auto">Cr&eacute;ez, modifiez et publiez vos parcours de vente en toute autonomie. &Eacute;diteur visuel, logique conditionnelle, actions automatis&eacute;es -- pas une ligne de code.</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-6 mb-8">
+                <div class="reveal bg-white card-shadow rounded-2xl p-6 border border-gray-100">
+                    <div class="w-12 h-12 rounded-xl bg-kayros-50 flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-kayros-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9.53 16.122a3 3 0 00-5.78 1.128 2.25 2.25 0 01-2.4 2.245 4.5 4.5 0 008.4-2.245c0-.399-.078-.78-.22-1.128zm0 0a15.998 15.998 0 003.388-1.62m-5.043-.025a15.994 15.994 0 011.622-3.395m3.42 3.42a15.995 15.995 0 004.764-4.648l3.876-5.814a1.151 1.151 0 00-1.597-1.597L14.146 6.32a15.996 15.996 0 00-4.649 4.763m3.42 3.42a6.776 6.776 0 00-3.42-3.42"/></svg>
+                    </div>
+                    <h3 class="text-lg font-extrabold text-dark mb-2">&Eacute;diteur d'&eacute;crans visuel</h3>
+                    <p class="text-sm text-gray-500 mb-3">20+ composants disponibles (texte, date, t&eacute;l&eacute;phone, checkbox, multi-choix). Composez vos &eacute;crans question par question, champ par champ.</p>
+                    <span class="badge-metier inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium">&Eacute;quipes M&eacute;tier</span>
+                </div>
+                <div class="reveal bg-white card-shadow rounded-2xl p-6 border border-gray-100">
+                    <div class="w-12 h-12 rounded-xl bg-emerald-50 flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M7.5 21L3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5"/></svg>
+                    </div>
+                    <h3 class="text-lg font-extrabold text-dark mb-2">Navigation conditionnelle ET/OU</h3>
+                    <p class="text-sm text-gray-500 mb-3">D&eacute;finissez des chemins de sortie multiples. 'Si pas de conjoint &rarr; Paiement. Si conjoint &rarr; Famille.' Combinaisons ET et OU illimit&eacute;es.</p>
+                    <span class="badge-metier inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium">&Eacute;quipes M&eacute;tier</span>
+                </div>
+                <div class="reveal bg-white card-shadow rounded-2xl p-6 border border-gray-100">
+                    <div class="w-12 h-12 rounded-xl bg-purple-50 flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-purple-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 010 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 010-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.281z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                    </div>
+                    <h3 class="text-lg font-extrabold text-dark mb-2">Actions automatis&eacute;es &agrave; chaque &eacute;tape</h3>
+                    <p class="text-sm text-gray-500 mb-3">Webhook vers votre CRM, v&eacute;rification d'adh&eacute;rent existant, d&eacute;clenchement de campagne marketing -- &agrave; chaque passage d'&eacute;tape.</p>
+                    <span class="badge-dsi inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium">DSI</span>
+                </div>
+                <div class="reveal bg-white card-shadow rounded-2xl p-6 border border-gray-100">
+                    <div class="w-12 h-12 rounded-xl bg-amber-50 flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-amber-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z"/></svg>
+                    </div>
+                    <h3 class="text-lg font-extrabold text-dark mb-2">Catalogue produits complet</h3>
+                    <p class="text-sm text-gray-500 mb-3">&Eacute;ligibilit&eacute;, pi&egrave;ces justificatives, fr&eacute;quences de paiement, modules optionnels, &eacute;ditique, distribution multi-canal -- tout est param&eacute;trable.</p>
+                    <span class="badge-dg inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium">Dir. G&eacute;n&eacute;rale</span>
+                </div>
+            </div>
+
+            <div class="text-center mb-4">
+                <button onclick="toggleDrawer('drawer-admin')" class="pill inline-flex items-center gap-2 px-6 py-2.5 border border-gray-200 text-gray-500 text-sm font-semibold hover:border-kayros-300 hover:text-kayros-500 transition-colors">
+                    Voir toutes les fonctionnalit&eacute;s
+                    <svg class="w-4 h-4 chevron-rotate" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/></svg>
+                </button>
+            </div>
+
+            <div id="drawer-admin" class="drawer-content">
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4 pt-6">
+                    <div class="p-4 bg-gray-50 rounded-xl border border-gray-100">
+                        <p class="font-bold text-dark text-sm">Templates r&eacute;utilisables</p>
+                        <p class="text-xs text-gray-500 mt-1">Base de templates s&eacute;par&eacute;e -- un m&ecirc;me template utilisable dans plusieurs parcours</p>
+                        <span class="badge-dsi inline-flex px-2 py-0.5 rounded-full text-xs font-medium mt-2">DSI</span>
+                    </div>
+                    <div class="p-4 bg-gray-50 rounded-xl border border-gray-100">
+                        <p class="font-bold text-dark text-sm">Tagging RGPD par champ</p>
+                        <p class="text-xs text-gray-500 mt-1">Chaque champ taggu&eacute; comme sensible d&eacute;clenche des r&egrave;gles de traitement sp&eacute;cifiques</p>
+                        <span class="badge-dsi inline-flex px-2 py-0.5 rounded-full text-xs font-medium mt-2">DSI</span>
+                    </div>
+                    <div class="p-4 bg-gray-50 rounded-xl border border-gray-100">
+                        <p class="font-bold text-dark text-sm">Cycle conception &rarr; publication</p>
+                        <p class="text-xs text-gray-500 mt-1">Travaillez sur un parcours sans impacter la production. Publiez quand vous &ecirc;tes pr&ecirc;t.</p>
+                        <span class="badge-dg inline-flex px-2 py-0.5 rounded-full text-xs font-medium mt-2">Dir. G&eacute;n&eacute;rale</span>
+                    </div>
+                    <div class="p-4 bg-gray-50 rounded-xl border border-gray-100">
+                        <p class="font-bold text-dark text-sm">Fr&eacute;quences de paiement par produit</p>
+                        <p class="text-xs text-gray-500 mt-1">Mensuel, trimestriel, semestriel, annuel -- le parcours n'affiche que les options du produit</p>
+                        <span class="badge-metier inline-flex px-2 py-0.5 rounded-full text-xs font-medium mt-2">&Eacute;quipes M&eacute;tier</span>
+                    </div>
+                    <div class="p-4 bg-gray-50 rounded-xl border border-gray-100">
+                        <p class="font-bold text-dark text-sm">PJ par produit ET par parcours</p>
+                        <p class="text-xs text-gray-500 mt-1">Un m&ecirc;me produit peut avoir des pi&egrave;ces justificatives diff&eacute;rentes selon le parcours de vente</p>
+                        <span class="badge-metier inline-flex px-2 py-0.5 rounded-full text-xs font-medium mt-2">&Eacute;quipes M&eacute;tier</span>
+                    </div>
+                    <div class="p-4 bg-gray-50 rounded-xl border border-gray-100">
+                        <p class="font-bold text-dark text-sm">R&egrave;gles d'&eacute;ligibilit&eacute; exhaustives</p>
+                        <p class="text-xs text-gray-500 mt-1">&Acirc;ge, r&eacute;gime, profession, profil, d&eacute;partement, code postal, commune, date d'effet -- tout est crit&egrave;re</p>
+                        <span class="badge-dir-com inline-flex px-2 py-0.5 rounded-full text-xs font-medium mt-2">Dir. Commerciale</span>
+                    </div>
+                    <div class="p-4 bg-gray-50 rounded-xl border border-gray-100">
+                        <p class="font-bold text-dark text-sm">Modules optionnels / bundling</p>
+                        <p class="text-xs text-gray-500 mt-1">Pr&eacute;voyance, renforts optique, renforts dentaire -- attach&eacute;s au produit socle, propos&eacute;s en multi-&eacute;quipement</p>
+                        <span class="badge-dir-com inline-flex px-2 py-0.5 rounded-full text-xs font-medium mt-2">Dir. Commerciale</span>
+                    </div>
+                    <div class="p-4 bg-gray-50 rounded-xl border border-gray-100">
+                        <p class="font-bold text-dark text-sm">&Eacute;ditique dynamique (6 types)</p>
+                        <p class="text-xs text-gray-500 mt-1">Devis, bulletin d'adh&eacute;sion, mandat, devoir de conseil, courrier r&eacute;siliation, FIC -- g&eacute;n&eacute;r&eacute;s dynamiquement</p>
+                        <span class="badge-dg inline-flex px-2 py-0.5 rounded-full text-xs font-medium mt-2">Dir. G&eacute;n&eacute;rale</span>
+                    </div>
+                    <div class="p-4 bg-gray-50 rounded-xl border border-gray-100">
+                        <p class="font-bold text-dark text-sm">&Eacute;ditique statique</p>
+                        <p class="text-xs text-gray-500 mt-1">Grilles de garanties, IPID, r&egrave;glement mutualiste -- pr&eacute;-charg&eacute;s et joints automatiquement</p>
+                        <span class="badge-metier inline-flex px-2 py-0.5 rounded-full text-xs font-medium mt-2">&Eacute;quipes M&eacute;tier</span>
+                    </div>
+                    <div class="p-4 bg-gray-50 rounded-xl border border-gray-100">
+                        <p class="font-bold text-dark text-sm">Distribution multi-canal</p>
+                        <p class="text-xs text-gray-500 mt-1">M&ecirc;me produit distribu&eacute; via r&eacute;seau interne et courtage avec FIC et commissionnements diff&eacute;rents</p>
+                        <span class="badge-dg inline-flex px-2 py-0.5 rounded-full text-xs font-medium mt-2">Dir. G&eacute;n&eacute;rale</span>
+                    </div>
+                    <div class="p-4 bg-gray-50 rounded-xl border border-gray-100">
+                        <p class="font-bold text-dark text-sm">Recommandations produit (3 modes)</p>
+                        <p class="text-xs text-gray-500 mt-1">Par besoin+budget, par questions+budget, ou par questions seules -- nourrit le devoir de conseil</p>
+                        <span class="badge-dir-com inline-flex px-2 py-0.5 rounded-full text-xs font-medium mt-2">Dir. Commerciale</span>
+                    </div>
+                    <div class="p-4 bg-gray-50 rounded-xl border border-gray-100">
+                        <p class="font-bold text-dark text-sm">Import tarifs intelligent (6 &eacute;tapes)</p>
+                        <p class="text-xs text-gray-500 mt-1">Auto-mapping de structure, validation, extraction, analyse d'impact -- absorbe n'importe quel format</p>
+                        <span class="badge-dsi inline-flex px-2 py-0.5 rounded-full text-xs font-medium mt-2">DSI</span>
+                    </div>
+                    <div class="p-4 bg-gray-50 rounded-xl border border-gray-100">
+                        <p class="font-bold text-dark text-sm">Tarificateur int&eacute;gr&eacute; modifiable</p>
+                        <p class="text-xs text-gray-500 mt-1">Visualisez, v&eacute;rifiez et modifiez unitairement les tarifs -- syst&egrave;me ouvert et transparent</p>
+                        <span class="badge-metier inline-flex px-2 py-0.5 rounded-full text-xs font-medium mt-2">&Eacute;quipes M&eacute;tier</span>
+                    </div>
+                    <div class="p-4 bg-gray-50 rounded-xl border border-gray-100">
+                        <p class="font-bold text-dark text-sm">Attribution opportunit&eacute;s</p>
+                        <p class="text-xs text-gray-500 mt-1">Tour de r&ocirc;le, par comp&eacute;tence (localisation, sp&eacute;cialisation), par r&eacute;seau commercial</p>
+                        <span class="badge-dir-com inline-flex px-2 py-0.5 rounded-full text-xs font-medium mt-2">Dir. Commerciale</span>
+                    </div>
+                    <div class="p-4 bg-gray-50 rounded-xl border border-gray-100">
+                        <p class="font-bold text-dark text-sm">3 m&eacute;thodes d&eacute;ploiement affiliation</p>
+                        <p class="text-xs text-gray-500 mt-1">Import Excel massif, ajout individuel, ou lien libre pour auto-inscription</p>
+                        <span class="badge-dg inline-flex px-2 py-0.5 rounded-full text-xs font-medium mt-2">Dir. G&eacute;n&eacute;rale</span>
+                    </div>
+                    <div class="p-4 bg-gray-50 rounded-xl border border-gray-100">
+                        <p class="font-bold text-dark text-sm">Conformit&eacute; DDA/RGPD int&eacute;gr&eacute;e</p>
+                        <p class="text-xs text-gray-500 mt-1">Blocs de param&eacute;trage devoir de conseil et protection des donn&eacute;es sur chaque parcours</p>
+                        <span class="badge-dsi inline-flex px-2 py-0.5 rounded-full text-xs font-medium mt-2">DSI</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== MODULE 6: PILOTAGE ========== -->
+    <section id="pilotage" class="section-light py-20 lg:py-28">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <span class="reveal inline-block text-xs font-bold text-kayros-500 uppercase tracking-widest mb-4">Pilotage & Performance</span>
+                <h2 class="reveal text-3xl md:text-4xl lg:text-5xl font-extrabold text-dark mb-4">Mesurez. Identifiez. Corrigez. En boucle continue.</h2>
+                <p class="reveal text-lg text-gray-500 max-w-3xl mx-auto">Tableaux de bord personnalisables par profil m&eacute;tier. De l'identification d'un taux de chute &agrave; la correction du parcours -- en quelques clics.</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-6 mb-8">
+                <div class="reveal bg-white card-shadow rounded-2xl p-6 border border-gray-100">
+                    <div class="w-12 h-12 rounded-xl bg-kayros-50 flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-kayros-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z"/></svg>
+                    </div>
+                    <h3 class="text-lg font-extrabold text-dark mb-2">Taux de conversion par &eacute;tape</h3>
+                    <p class="text-sm text-gray-500 mb-3">Visualisez la conversion &agrave; chaque &eacute;tape de chaque parcours. Identifiez pr&eacute;cis&eacute;ment o&ugrave; vos prospects d&eacute;crochent.</p>
+                    <span class="badge-dir-com inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium">Dir. Commerciale</span>
+                </div>
+                <div class="reveal bg-white card-shadow rounded-2xl p-6 border border-gray-100">
+                    <div class="w-12 h-12 rounded-xl bg-emerald-50 flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99"/></svg>
+                    </div>
+                    <h3 class="text-lg font-extrabold text-dark mb-2">Boucle d'am&eacute;lioration continue</h3>
+                    <p class="text-sm text-gray-500 mb-3">Taux de chute identifi&eacute; &rarr; modification du parcours dans l'admin &rarr; nouvelle mesure. Mesurez, corrigez, r&eacute;p&eacute;tez.</p>
+                    <span class="badge-dg inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium">Dir. G&eacute;n&eacute;rale</span>
+                </div>
+                <div class="reveal bg-white card-shadow rounded-2xl p-6 border border-gray-100">
+                    <div class="w-12 h-12 rounded-xl bg-amber-50 flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-amber-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"/></svg>
+                    </div>
+                    <h3 class="text-lg font-extrabold text-dark mb-2">Classement conseillers</h3>
+                    <p class="text-sm text-gray-500 mb-3">Performance individuelle d&eacute;taill&eacute;e : taux de devisage, taux de signature. 3 vues : global, mises en relation, fiches.</p>
+                    <span class="badge-dir-com inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium">Dir. Commerciale</span>
+                </div>
+                <div class="reveal bg-white card-shadow rounded-2xl p-6 border border-gray-100">
+                    <div class="w-12 h-12 rounded-xl bg-purple-50 flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-purple-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M10.34 15.84c-.688-.06-1.386-.09-2.09-.09H7.5a4.5 4.5 0 110-9h.75c.704 0 1.402-.03 2.09-.09m0 9.18c.253.962.584 1.892.985 2.783.247.55.06 1.21-.463 1.511l-.657.38c-.551.318-1.26.117-1.527-.461a20.845 20.845 0 01-1.44-4.282m3.102.069a18.03 18.03 0 01-.59-4.59c0-1.586.205-3.124.59-4.59m0 9.18a23.848 23.848 0 018.835 2.535M10.34 6.66a23.847 23.847 0 008.835-2.535m0 0A23.74 23.74 0 0018.795 3m.38 1.125a23.91 23.91 0 011.014 5.395m-1.014 8.855c-.118.38-.245.754-.38 1.125m.38-1.125a23.91 23.91 0 001.014-5.395m0-3.46c.495.413.811 1.035.811 1.73 0 .695-.316 1.317-.811 1.73m0-3.46a24.347 24.347 0 010 3.46"/></svg>
+                    </div>
+                    <h3 class="text-lg font-extrabold text-dark mb-2">Module acquisition digitale</h3>
+                    <p class="text-sm text-gray-500 mb-3">Comparateurs, r&eacute;gies (Google, Facebook, TikTok, Snapchat) -- suivi par source, par cible, avec facturation automatis&eacute;e.</p>
+                    <span class="badge-dg inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium">Dir. G&eacute;n&eacute;rale</span>
+                </div>
+            </div>
+
+            <div class="text-center mb-4">
+                <button onclick="toggleDrawer('drawer-pilotage')" class="pill inline-flex items-center gap-2 px-6 py-2.5 border border-gray-200 text-gray-500 text-sm font-semibold hover:border-kayros-300 hover:text-kayros-500 transition-colors">
+                    Voir toutes les fonctionnalit&eacute;s
+                    <svg class="w-4 h-4 chevron-rotate" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/></svg>
+                </button>
+            </div>
+
+            <div id="drawer-pilotage" class="drawer-content">
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4 pt-6">
+                    <div class="p-4 bg-white rounded-xl border border-gray-100">
+                        <p class="font-bold text-dark text-sm">Dashboard personnalisable</p>
+                        <p class="text-xs text-gray-500 mt-1">Profils distincts : marketing, direction commerciale, acquisition digitale -- chacun son tableau de bord</p>
+                        <span class="badge-dg inline-flex px-2 py-0.5 rounded-full text-xs font-medium mt-2">Dir. G&eacute;n&eacute;rale</span>
+                    </div>
+                    <div class="p-4 bg-white rounded-xl border border-gray-100">
+                        <p class="font-bold text-dark text-sm">Compteurs globaux</p>
+                        <p class="text-xs text-gray-500 mt-1">Devis, contrats, contrats full web, chiffre d'affaires, &acirc;ge moyen -- en un coup d'oeil</p>
+                        <span class="badge-dg inline-flex px-2 py-0.5 rounded-full text-xs font-medium mt-2">Dir. G&eacute;n&eacute;rale</span>
+                    </div>
+                    <div class="p-4 bg-white rounded-xl border border-gray-100">
+                        <p class="font-bold text-dark text-sm">Ventilation g&eacute;ographique</p>
+                        <p class="text-xs text-gray-500 mt-1">Nombre de contrats par d&eacute;partement pour piloter la strat&eacute;gie r&eacute;gionale</p>
+                        <span class="badge-dir-com inline-flex px-2 py-0.5 rounded-full text-xs font-medium mt-2">Dir. Commerciale</span>
+                    </div>
+                    <div class="p-4 bg-white rounded-xl border border-gray-100">
+                        <p class="font-bold text-dark text-sm">Ventilation par formule</p>
+                        <p class="text-xs text-gray-500 mt-1">Nombre de contrats par produit pour identifier les bestsellers</p>
+                        <span class="badge-dir-com inline-flex px-2 py-0.5 rounded-full text-xs font-medium mt-2">Dir. Commerciale</span>
+                    </div>
+                    <div class="p-4 bg-white rounded-xl border border-gray-100">
+                        <p class="font-bold text-dark text-sm">Mises en relation vs fiches</p>
+                        <p class="text-xs text-gray-500 mt-1">Distinction qualit&eacute; : prospect qui a cliqu&eacute; sur le produit (meilleure qualit&eacute;) vs fiche simple</p>
+                        <span class="badge-dir-com inline-flex px-2 py-0.5 rounded-full text-xs font-medium mt-2">Dir. Commerciale</span>
+                    </div>
+                    <div class="p-4 bg-white rounded-xl border border-gray-100">
+                        <p class="font-bold text-dark text-sm">12+ indicateurs par source</p>
+                        <p class="text-xs text-gray-500 mt-1">Projets, r&eacute;partition, leads attribu&eacute;s, doublons, nets, taux devisage, signature, qualification, d&eacute;chet, opt-in</p>
+                        <span class="badge-dir-com inline-flex px-2 py-0.5 rounded-full text-xs font-medium mt-2">Dir. Commerciale</span>
+                    </div>
+                    <div class="p-4 bg-white rounded-xl border border-gray-100">
+                        <p class="font-bold text-dark text-sm">Analyse par cible</p>
+                        <p class="text-xs text-gray-500 mt-1">Senior, active, TNS -- taux de conversion et performance par segment de prospects</p>
+                        <span class="badge-dir-com inline-flex px-2 py-0.5 rounded-full text-xs font-medium mt-2">Dir. Commerciale</span>
+                    </div>
+                    <div class="p-4 bg-white rounded-xl border border-gray-100">
+                        <p class="font-bold text-dark text-sm">Analyse par horaire</p>
+                        <p class="text-xs text-gray-500 mt-1">&Agrave; quelle heure g&eacute;n&egrave;re-t-on le plus de devis ? Le plus de contrats ? Optimisez les cr&eacute;neaux.</p>
+                        <span class="badge-dir-com inline-flex px-2 py-0.5 rounded-full text-xs font-medium mt-2">Dir. Commerciale</span>
+                    </div>
+                    <div class="p-4 bg-white rounded-xl border border-gray-100">
+                        <p class="font-bold text-dark text-sm">Facturation comparateurs</p>
+                        <p class="text-xs text-gray-500 mt-1">Gestion des doublons, prix unitaires param&eacute;trables, calcul automatique -- argumentez avec les donn&eacute;es</p>
+                        <span class="badge-dg inline-flex px-2 py-0.5 rounded-full text-xs font-medium mt-2">Dir. G&eacute;n&eacute;rale</span>
+                    </div>
+                    <div class="p-4 bg-white rounded-xl border border-gray-100">
+                        <p class="font-bold text-dark text-sm">Signaux conversion vers r&eacute;gies</p>
+                        <p class="text-xs text-gray-500 mt-1">2 niveaux : conversion simple (sign&eacute;) + enrichi (sign&eacute; ET rest&eacute; 24+ mois -- n&eacute;cessite donn&eacute;es CRM)</p>
+                        <span class="badge-dg inline-flex px-2 py-0.5 rounded-full text-xs font-medium mt-2">Dir. G&eacute;n&eacute;rale</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== MODULE 7: INTEGRATIONS ========== -->
+    <section id="integrations" class="py-20 lg:py-28">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <span class="reveal inline-block text-xs font-bold text-kayros-500 uppercase tracking-widest mb-4">&Eacute;cosyst&egrave;me ouvert</span>
+                <h2 class="reveal text-3xl md:text-4xl lg:text-5xl font-extrabold text-dark mb-4">Kayros s'int&egrave;gre. Votre &eacute;cosyst&egrave;me reste.</h2>
+                <p class="reveal text-lg text-gray-500 max-w-3xl mx-auto">Vos documents, votre CRM, votre syst&egrave;me de gestion. Kayros s'ins&egrave;re dans l'existant sans rien remplacer.</p>
+            </div>
+
+            <!-- Scrolling marquee -->
+            <div class="reveal overflow-hidden mb-20">
+                <div class="flex marquee-track" style="width: max-content;">
+                    <div class="flex gap-6 mr-6">
+                        <div class="flex items-center gap-3 bg-white card-shadow rounded-2xl px-6 py-4 border border-gray-100">
+                            <div class="w-10 h-10 rounded-lg bg-kayros-50 flex items-center justify-center"><svg class="w-5 h-5 text-kayros-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"/></svg></div>
+                            <span class="font-bold text-dark text-sm whitespace-nowrap">Signature &eacute;lectronique</span>
+                        </div>
+                        <div class="flex items-center gap-3 bg-white card-shadow rounded-2xl px-6 py-4 border border-gray-100">
+                            <div class="w-10 h-10 rounded-lg bg-emerald-50 flex items-center justify-center"><svg class="w-5 h-5 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5z"/></svg></div>
+                            <span class="font-bold text-dark text-sm whitespace-nowrap">Paiement</span>
+                        </div>
+                        <div class="flex items-center gap-3 bg-white card-shadow rounded-2xl px-6 py-4 border border-gray-100">
+                            <div class="w-10 h-10 rounded-lg bg-purple-50 flex items-center justify-center"><svg class="w-5 h-5 text-purple-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375m16.5 0v3.75m-16.5-3.75v3.75m16.5 0v3.75C20.25 16.153 16.556 18 12 18s-8.25-1.847-8.25-4.125v-3.75m16.5 0c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125"/></svg></div>
+                            <span class="font-bold text-dark text-sm whitespace-nowrap">CRM</span>
+                        </div>
+                        <div class="flex items-center gap-3 bg-white card-shadow rounded-2xl px-6 py-4 border border-gray-100">
+                            <div class="w-10 h-10 rounded-lg bg-amber-50 flex items-center justify-center"><svg class="w-5 h-5 text-amber-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z"/></svg></div>
+                            <span class="font-bold text-dark text-sm whitespace-nowrap">Aircall</span>
+                        </div>
+                        <div class="flex items-center gap-3 bg-white card-shadow rounded-2xl px-6 py-4 border border-gray-100">
+                            <div class="w-10 h-10 rounded-lg bg-cyan-50 flex items-center justify-center"><svg class="w-5 h-5 text-cyan-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"/></svg></div>
+                            <span class="font-bold text-dark text-sm whitespace-nowrap">Docteler</span>
+                        </div>
+                        <div class="flex items-center gap-3 bg-white card-shadow rounded-2xl px-6 py-4 border border-gray-100">
+                            <div class="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center"><svg class="w-5 h-5 text-blue-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"/></svg></div>
+                            <span class="font-bold text-dark text-sm whitespace-nowrap">Brevo</span>
+                        </div>
+                        <div class="flex items-center gap-3 bg-white card-shadow rounded-2xl px-6 py-4 border border-gray-100">
+                            <div class="w-10 h-10 rounded-lg bg-red-50 flex items-center justify-center"><svg class="w-5 h-5 text-red-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 12c0-1.232-.046-2.453-.138-3.662a4.006 4.006 0 00-3.7-3.7 48.678 48.678 0 00-7.324 0 4.006 4.006 0 00-3.7 3.7c-.017.22-.032.441-.046.662M19.5 12l3-3m-3 3l-3-3m-12 3c0 1.232.046 2.453.138 3.662a4.006 4.006 0 003.7 3.7 48.656 48.656 0 007.324 0 4.006 4.006 0 003.7-3.7c.017-.22.032-.441.046-.662M4.5 12l3 3m-3-3l-3 3"/></svg></div>
+                            <span class="font-bold text-dark text-sm whitespace-nowrap">R&eacute;siliation</span>
+                        </div>
+                    </div>
+                    <div class="flex gap-6">
+                        <div class="flex items-center gap-3 bg-white card-shadow rounded-2xl px-6 py-4 border border-gray-100">
+                            <div class="w-10 h-10 rounded-lg bg-kayros-50 flex items-center justify-center"><svg class="w-5 h-5 text-kayros-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"/></svg></div>
+                            <span class="font-bold text-dark text-sm whitespace-nowrap">Signature &eacute;lectronique</span>
+                        </div>
+                        <div class="flex items-center gap-3 bg-white card-shadow rounded-2xl px-6 py-4 border border-gray-100">
+                            <div class="w-10 h-10 rounded-lg bg-emerald-50 flex items-center justify-center"><svg class="w-5 h-5 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5z"/></svg></div>
+                            <span class="font-bold text-dark text-sm whitespace-nowrap">Paiement</span>
+                        </div>
+                        <div class="flex items-center gap-3 bg-white card-shadow rounded-2xl px-6 py-4 border border-gray-100">
+                            <div class="w-10 h-10 rounded-lg bg-purple-50 flex items-center justify-center"><svg class="w-5 h-5 text-purple-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375m16.5 0v3.75m-16.5-3.75v3.75m16.5 0v3.75C20.25 16.153 16.556 18 12 18s-8.25-1.847-8.25-4.125v-3.75m16.5 0c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125"/></svg></div>
+                            <span class="font-bold text-dark text-sm whitespace-nowrap">CRM</span>
+                        </div>
+                        <div class="flex items-center gap-3 bg-white card-shadow rounded-2xl px-6 py-4 border border-gray-100">
+                            <div class="w-10 h-10 rounded-lg bg-amber-50 flex items-center justify-center"><svg class="w-5 h-5 text-amber-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z"/></svg></div>
+                            <span class="font-bold text-dark text-sm whitespace-nowrap">Aircall</span>
+                        </div>
+                        <div class="flex items-center gap-3 bg-white card-shadow rounded-2xl px-6 py-4 border border-gray-100">
+                            <div class="w-10 h-10 rounded-lg bg-cyan-50 flex items-center justify-center"><svg class="w-5 h-5 text-cyan-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"/></svg></div>
+                            <span class="font-bold text-dark text-sm whitespace-nowrap">Docteler</span>
+                        </div>
+                        <div class="flex items-center gap-3 bg-white card-shadow rounded-2xl px-6 py-4 border border-gray-100">
+                            <div class="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center"><svg class="w-5 h-5 text-blue-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"/></svg></div>
+                            <span class="font-bold text-dark text-sm whitespace-nowrap">Brevo</span>
+                        </div>
+                        <div class="flex items-center gap-3 bg-white card-shadow rounded-2xl px-6 py-4 border border-gray-100">
+                            <div class="w-10 h-10 rounded-lg bg-red-50 flex items-center justify-center"><svg class="w-5 h-5 text-red-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 12c0-1.232-.046-2.453-.138-3.662a4.006 4.006 0 00-3.7-3.7 48.678 48.678 0 00-7.324 0 4.006 4.006 0 00-3.7 3.7c-.017.22-.032.441-.046.662M19.5 12l3-3m-3 3l-3-3m-12 3c0 1.232.046 2.453.138 3.662a4.006 4.006 0 003.7 3.7 48.656 48.656 0 007.324 0 4.006 4.006 0 003.7-3.7c.017-.22.032-.441.046-.662M4.5 12l3 3m-3-3l-3 3"/></svg></div>
+                            <span class="font-bold text-dark text-sm whitespace-nowrap">R&eacute;siliation</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mise en gestion -->
+            <div class="mb-12">
+                <div class="text-center mb-10">
+                    <h3 class="reveal text-2xl md:text-3xl font-extrabold text-dark mb-3">Mise en gestion automatis&eacute;e</h3>
+                    <p class="reveal text-base text-gray-500 max-w-2xl mx-auto">Le seul point d'int&eacute;gration avec votre syst&egrave;me de gestion.</p>
+                </div>
+                <div class="grid md:grid-cols-3 gap-6">
+                    <div class="reveal bg-white card-shadow rounded-2xl p-6 border border-gray-100 text-center">
+                        <div class="w-14 h-14 rounded-2xl bg-kayros-50 flex items-center justify-center mx-auto mb-4">
+                            <svg class="w-7 h-7 text-kayros-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75L22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3l-4.5 16.5"/></svg>
+                        </div>
+                        <h4 class="font-extrabold text-dark mb-2">API</h4>
+                        <p class="text-sm text-gray-500">3 &eacute;tapes automatis&eacute;es : cr&eacute;ation contrat, envoi documents, confirmation.</p>
+                    </div>
+                    <div class="reveal bg-white card-shadow rounded-2xl p-6 border border-gray-100 text-center">
+                        <div class="w-14 h-14 rounded-2xl bg-emerald-50 flex items-center justify-center mx-auto mb-4">
+                            <svg class="w-7 h-7 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"/></svg>
+                        </div>
+                        <h4 class="font-extrabold text-dark mb-2">GED</h4>
+                        <p class="text-sm text-gray-500">D&eacute;p&ocirc;t index&eacute; avec routine automatis&eacute;e dans votre GED existante.</p>
+                    </div>
+                    <div class="reveal bg-white card-shadow rounded-2xl p-6 border border-gray-100 text-center">
+                        <div class="w-14 h-14 rounded-2xl bg-purple-50 flex items-center justify-center mx-auto mb-4">
+                            <svg class="w-7 h-7 text-purple-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"/></svg>
+                        </div>
+                        <h4 class="font-extrabold text-dark mb-2">SFTP</h4>
+                        <p class="text-sm text-gray-500">Fichiers &agrave; plat quotidiens d&eacute;pos&eacute;s automatiquement sur votre serveur.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center mb-4">
+                <button onclick="toggleDrawer('drawer-integrations')" class="pill inline-flex items-center gap-2 px-6 py-2.5 border border-gray-200 text-gray-500 text-sm font-semibold hover:border-kayros-300 hover:text-kayros-500 transition-colors">
+                    Voir toutes les fonctionnalit&eacute;s
+                    <svg class="w-4 h-4 chevron-rotate" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/></svg>
+                </button>
+            </div>
+
+            <div id="drawer-integrations" class="drawer-content">
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4 pt-6">
+                    <div class="p-4 bg-gray-50 rounded-xl border border-gray-100">
+                        <p class="font-bold text-dark text-sm">Docteler : contr&ocirc;le PJ intelligent</p>
+                        <p class="text-xs text-gray-500 mt-1">V&eacute;rification type de document + croisement donn&eacute;es (nom, pr&eacute;nom, date naissance, N&deg; s&eacute;cu) + alertes non-conformit&eacute;</p>
+                        <span class="badge-dsi inline-flex px-2 py-0.5 rounded-full text-xs font-medium mt-2">DSI</span>
+                    </div>
+                    <div class="p-4 bg-gray-50 rounded-xl border border-gray-100">
+                        <p class="font-bold text-dark text-sm">CRM bidirectionnel</p>
+                        <p class="text-xs text-gray-500 mt-1">Synchronisation &agrave; chaque &eacute;tape du parcours via webhook + v&eacute;rification automatique adh&eacute;rent existant</p>
+                        <span class="badge-dsi inline-flex px-2 py-0.5 rounded-full text-xs font-medium mt-2">DSI</span>
+                    </div>
+                    <div class="p-4 bg-gray-50 rounded-xl border border-gray-100">
+                        <p class="font-bold text-dark text-sm">API tarification temps r&eacute;el</p>
+                        <p class="text-xs text-gray-500 mt-1">Connexion directe aux API de votre syst&egrave;me de gestion pour calcul des tarifs en temps r&eacute;el</p>
+                        <span class="badge-dsi inline-flex px-2 py-0.5 rounded-full text-xs font-medium mt-2">DSI</span>
+                    </div>
+                    <div class="p-4 bg-gray-50 rounded-xl border border-gray-100">
+                        <p class="font-bold text-dark text-sm">Import fichiers intelligent</p>
+                        <p class="text-xs text-gray-500 mt-1">Absorbe n'importe quel format -- auto-mapping, validation, analyse d'impact, d&eacute;tection d'&eacute;carts</p>
+                        <span class="badge-dsi inline-flex px-2 py-0.5 rounded-full text-xs font-medium mt-2">DSI</span>
+                    </div>
+                    <div class="p-4 bg-gray-50 rounded-xl border border-gray-100">
+                        <p class="font-bold text-dark text-sm">R&eacute;gies publicitaires</p>
+                        <p class="text-xs text-gray-500 mt-1">Remont&eacute;e signaux de conversion (+ r&eacute;tention CRM) pour optimiser Google, Facebook, TikTok, Snapchat</p>
+                        <span class="badge-dir-com inline-flex px-2 py-0.5 rounded-full text-xs font-medium mt-2">Dir. Commerciale</span>
+                    </div>
+                    <div class="p-4 bg-gray-50 rounded-xl border border-gray-100">
+                        <p class="font-bold text-dark text-sm">Liasse documentaire compl&egrave;te</p>
+                        <p class="text-xs text-gray-500 mt-1">BA, mandat, FIC, r&eacute;siliation, RIB, CIN, attestation s&eacute;cu -- tout est d&eacute;pos&eacute; automatiquement en gestion</p>
+                        <span class="badge-metier inline-flex px-2 py-0.5 rounded-full text-xs font-medium mt-2">&Eacute;quipes M&eacute;tier</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== POURQUOI KAYROS ========== -->
+    <section class="section-light py-20 lg:py-28">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <span class="reveal inline-block text-xs font-bold text-kayros-500 uppercase tracking-widest mb-4">Pourquoi Kayros</span>
+                <h2 class="reveal text-3xl md:text-4xl lg:text-5xl font-extrabold text-dark mb-4">Les engagements qui font la diff&eacute;rence</h2>
+            </div>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="reveal bg-white card-shadow rounded-2xl p-6 border border-gray-100">
+                    <div class="w-12 h-12 rounded-xl bg-kayros-50 flex items-center justify-center mb-4"><svg class="w-6 h-6 text-kayros-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M7.5 21L3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5"/></svg></div>
+                    <h3 class="text-lg font-extrabold text-dark mb-2">Processus unique</h3>
+                    <p class="text-sm text-gray-500">Un seul processus de vente, partag&eacute; entre le prospect web et le conseiller. Pas de reprise de dossier, pas de double saisie.</p>
+                </div>
+                <div class="reveal bg-white card-shadow rounded-2xl p-6 border border-gray-100">
+                    <div class="w-12 h-12 rounded-xl bg-emerald-50 flex items-center justify-center mb-4"><svg class="w-6 h-6 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75L22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3l-4.5 16.5"/></svg></div>
+                    <h3 class="text-lg font-extrabold text-dark mb-2">Z&eacute;ro code</h3>
+                    <p class="text-sm text-gray-500">Vos &eacute;quipes m&eacute;tier cr&eacute;ent et modifient les parcours en toute autonomie. Aucune d&eacute;pendance technique.</p>
+                </div>
+                <div class="reveal bg-white card-shadow rounded-2xl p-6 border border-gray-100">
+                    <div class="w-12 h-12 rounded-xl bg-amber-50 flex items-center justify-center mb-4"><svg class="w-6 h-6 text-amber-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.042 21.672L13.684 16.6m0 0l-2.51 2.225.569-9.47 5.227 7.917-3.286-.672zM12 2.25V4.5m5.834.166l-1.591 1.591M20.25 10.5H18M7.757 14.743l-1.59 1.591M6 10.5H3.75m4.007-4.243l-1.59-1.591"/></svg></div>
+                    <h3 class="text-lg font-extrabold text-dark mb-2">2 clics max</h3>
+                    <p class="text-sm text-gray-500">Chaque action critique du conseiller est accessible en deux clics maximum. Productivit&eacute; par design.</p>
+                </div>
+                <div class="reveal bg-white card-shadow rounded-2xl p-6 border border-gray-100">
+                    <div class="w-12 h-12 rounded-xl bg-purple-50 flex items-center justify-center mb-4"><svg class="w-6 h-6 text-purple-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"/></svg></div>
+                    <h3 class="text-lg font-extrabold text-dark mb-2">Vos documents</h3>
+                    <p class="text-sm text-gray-500">Bulletins d'adh&eacute;sion, mandats, IPID -- Kayros utilise vos documents existants, pas des templates g&eacute;n&eacute;riques.</p>
+                </div>
+                <div class="reveal bg-white card-shadow rounded-2xl p-6 border border-gray-100">
+                    <div class="w-12 h-12 rounded-xl bg-cyan-50 flex items-center justify-center mb-4"><svg class="w-6 h-6 text-cyan-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244"/></svg></div>
+                    <h3 class="text-lg font-extrabold text-dark mb-2">Cha&icirc;ne automatique</h3>
+                    <p class="text-sm text-gray-500">De la souscription &agrave; la mise en gestion, en passant par la signature et le d&eacute;p&ocirc;t GED -- tout est automatis&eacute;.</p>
+                </div>
+                <div class="reveal bg-white card-shadow rounded-2xl p-6 border border-gray-100">
+                    <div class="w-12 h-12 rounded-xl bg-red-50 flex items-center justify-center mb-4"><svg class="w-6 h-6 text-red-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"/></svg></div>
+                    <h3 class="text-lg font-extrabold text-dark mb-2">Conformit&eacute; native</h3>
+                    <p class="text-sm text-gray-500">DDA, RGPD, d&eacute;clarations r&eacute;glementaires, devoir de conseil -- int&eacute;gr&eacute;s dans chaque parcours, pas ajout&eacute;s apr&egrave;s coup.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== CTA FINAL ========== -->
+    <section class="py-20 lg:py-28">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="reveal text-3xl md:text-4xl lg:text-5xl font-extrabold text-dark mb-6">Atteignez vos objectifs de croissance et de qualit&eacute;.</h2>
+            <p class="reveal text-lg text-gray-500 mb-10">Rejoignez la communaut&eacute; de Kayroutis.</p>
+            <div class="reveal">
+                <a href="mailto:kays@kayros.tech" class="pill inline-flex items-center px-10 py-4 bg-kayros-500 text-white font-bold text-lg hover:bg-kayros-600 transition-colors cta-glow">
+                    R&eacute;servez votre d&eacute;monstration
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== FOOTER ========== -->
+    <footer class="bg-dark text-white py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-3 gap-12">
+                <div>
+                    <span class="text-xl font-extrabold tracking-[0.25em]">KAYROS<span class="text-kayros-500">.</span></span>
+                    <p class="text-gray-400 text-sm mt-3">Le catalyseur de la distribution pour les assureurs, mutuelles et courtiers.</p>
+                </div>
+                <div>
+                    <h4 class="font-extrabold text-sm uppercase tracking-widest mb-4 text-gray-300">Plan du site</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-sm text-gray-400 hover:text-white transition-colors">Accueil</a></li>
+                        <li><a href="#souscription-web" class="text-sm text-gray-400 hover:text-white transition-colors">Fonctionnalit&eacute;s</a></li>
+                        <li><a href="mailto:kays@kayros.tech" class="text-sm text-gray-400 hover:text-white transition-colors">Demander une d&eacute;mo</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-extrabold text-sm uppercase tracking-widest mb-4 text-gray-300">Contact</h4>
+                    <ul class="space-y-2">
+                        <li><a href="mailto:kays@kayros.tech" class="text-sm text-gray-400 hover:text-white transition-colors">kays@kayros.tech</a></li>
+                        <li><span class="text-sm text-gray-400">15 rue Bucarest, 75008 Paris</span></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-12 pt-8 text-center">
+                <p class="text-xs text-gray-500">&copy; 2026 Kayros. Tous droits r&eacute;serv&eacute;s.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ========== JAVASCRIPT ========== -->
+    <script>
+        // Mobile menu toggle - close on link click
+        document.querySelectorAll('#mobile-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                document.getElementById('mobile-menu').classList.remove('open');
+            });
+        });
+
+        // Drawer toggle function
+        function toggleDrawer(id) {
+            const drawer = document.getElementById(id);
+            const btn = drawer.previousElementSibling.querySelector('button') || drawer.previousElementSibling;
+            const chevron = btn.querySelector('.chevron-rotate') || btn.querySelector('svg');
+            drawer.classList.toggle('drawer-open');
+            if (chevron) {
+                chevron.classList.toggle('rotate-180');
+            }
+        }
+
+        // IntersectionObserver for reveal animations
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    revealObserver.unobserve(entry.target);
+                }
+            });
+        }, {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        });
+
+        document.querySelectorAll('.reveal').forEach(el => {
+            revealObserver.observe(el);
+        });
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    const offset = 80;
+                    const top = target.getBoundingClientRect().top + window.pageYOffset - offset;
+                    window.scrollTo({ top, behavior: 'smooth' });
+                }
+            });
+        });
+
+        // Navbar shadow on scroll
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 10) {
+                nav.classList.add('shadow-sm');
+            } else {
+                nav.classList.remove('shadow-sm');
+            }
+        });
+    </script>
+
+</body>
+</html>
